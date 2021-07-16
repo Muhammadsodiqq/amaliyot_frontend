@@ -1,20 +1,61 @@
-import {Link} from "react-router-dom"
+import {useState} from "react";
+import {Link, useHistory} from "react-router-dom"
 
 function Signin() {
+    const [span,
+        setSpan] = useState("");
+    const [email,
+        setEmail] = useState("");
+    const [password,
+        setPassword] = useState("");
+    const history = useHistory()
+
+    async function Submit(e) {
+        e.preventDefault()
+
+        let response = await fetch("http://localhost/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({email, password})
+        })
+        response = await response.json()
+        console.log(response);
+        if (!response.ok) {
+            setSpan(response.message)
+            return;
+        }
+        window
+            .localStorage
+            .setItem("id", response.token);
+        history.replace("/")
+    }
+
     return (
-        <div class="container mx-auto p-4">
+        <div className="container mx-auto p-4">
             <div
-                class="flex mx-auto mt-10 flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
+                className="flex mx-auto mt-10 flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
                 <div
-                    class="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
+                    className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
                     Login To Your Account
                 </div>
-                <div class="mt-8">
-                    <form action="#" autoComplete="off">
-                        <div class="flex flex-col mb-2">
-                            <div class="flex relative ">
+                <div className="mt-8">
+                    <form action="#" autoComplete="off" onSubmit={e => Submit(e)}>
+                        {span
+                            ? <div className="flex flex-col mb-2">
+                            <div
+                                    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                    role="alert">
+                                    <strong class="font-bold">Error !</strong>
+                                    <span class="block sm:inline">{span}</span>
+                                    
+                                </div></div>
+                            : ""}
+                        <div className="flex flex-col mb-2">
+                            <div className="flex relative ">
                                 <span
-                                    class="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                                    className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                                     <svg
                                         width="15"
                                         height="15"
@@ -26,16 +67,17 @@ function Signin() {
                                     </svg>
                                 </span>
                                 <input
+                                    onKeyUp={e => setEmail(e.target.value)}
                                     type="text"
                                     id="sign-in-email"
-                                    class=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                     placeholder="Your email"/>
                             </div>
                         </div>
-                        <div class="flex flex-col mb-6">
-                            <div class="flex relative ">
+                        <div className="flex flex-col mb-6">
+                            <div className="flex relative ">
                                 <span
-                                    class="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                                    className="rounded-l-md inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                                     <svg
                                         width="15"
                                         height="15"
@@ -47,34 +89,33 @@ function Signin() {
                                     </svg>
                                 </span>
                                 <input
+                                    onKeyUp={e => setPassword(e.target.value)}
                                     type="password"
                                     id="sign-in-email"
-                                    class=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                     placeholder="Your password"/>
                             </div>
                         </div>
-                        <div class="flex items-center mb-6 -mt-4">
-                            
-                        </div>
-                        <div class="flex w-full">
+                        <div className="flex items-center mb-6 -mt-4"></div>
+                        <div className="flex w-full">
                             <button
                                 type="submit"
-                                class="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
+                                className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
                                 Login
                             </button>
                         </div>
                     </form>
                 </div>
-                <div class="flex items-center justify-center mt-6">
-                <span
-                    class="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400">
-                     You don&#x27;t have an account?
-                    <Link
-                        to="/signup"
-                        class="text-sm text-blue-500 underline hover:text-blue-700">
-                        Sign UP
-                    </Link>
-                </span>
+                <div className="flex items-center justify-center mt-6">
+                    <span
+                        className="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400">
+                        You don&#x27;t have an account?
+                        <Link
+                            to="/signup"
+                            className="text-sm text-blue-500 underline hover:text-blue-700">
+                            Sign UP
+                        </Link>
+                    </span>
                 </div>
             </div>
         </div>
