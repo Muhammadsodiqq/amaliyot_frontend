@@ -26,8 +26,10 @@ function Signup() {
             })
         })
         response = await response.json()
-        console.log(response);
         if(!response.ok) {
+            if(response.message.includes("Error:")) {
+                response.message = response.message.substr(6,300)
+            }
             setSpan(response.message)
             return ;
         }

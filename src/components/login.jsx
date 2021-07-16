@@ -21,8 +21,10 @@ function Signin() {
             body: JSON.stringify({email, password})
         })
         response = await response.json()
-        console.log(response);
         if (!response.ok) {
+            if(response.message.includes("Error:")) {
+                response.message = response.message.substr(6,300)
+            }
             setSpan(response.message)
             return;
         }
@@ -67,6 +69,7 @@ function Signin() {
                                     </svg>
                                 </span>
                                 <input
+                                required
                                     onKeyUp={e => setEmail(e.target.value)}
                                     type="text"
                                     id="sign-in-email"
@@ -89,6 +92,7 @@ function Signin() {
                                     </svg>
                                 </span>
                                 <input
+                                required
                                     onKeyUp={e => setPassword(e.target.value)}
                                     type="password"
                                     id="sign-in-email"
