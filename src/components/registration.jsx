@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Link, Redirect, useHistory} from "react-router-dom"
+import { useState} from "react";
+import {Link, useHistory} from "react-router-dom"
 
 function Signup() {
     const [surname, setSurname] = useState("");
