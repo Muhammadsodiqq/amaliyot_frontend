@@ -33,6 +33,7 @@ function Signup() {
             setSpan(response.message)
             return ;
         }
+        window.localStorage.removeItem("id");
         window.localStorage.setItem("id", response.token);
         history.replace("/")
     }

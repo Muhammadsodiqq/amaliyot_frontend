@@ -28,9 +28,8 @@ function Signin() {
             setSpan(response.message)
             return;
         }
-        window
-            .localStorage
-            .setItem("id", response.token);
+        window.localStorage.removeItem("id");
+        window.localStorage.setItem("id", response.token);
         history.replace("/")
     }
 

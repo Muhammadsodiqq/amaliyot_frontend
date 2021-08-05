@@ -48,6 +48,9 @@ function Settings() {
                 response.message = response.message.substr(6,300)
             }
             setSpan(response.message)
+            if(response.message === "user not found"){
+                window.localStorage.removeItem("src")
+            }
             history.replace("/login")
             return;
         }
@@ -58,7 +61,6 @@ function Settings() {
      const changeHandler = (event) => {
         setSelectedFile(event.target.files[0]);
     };
-
     const handleSubmission = async() => {
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -76,6 +78,8 @@ function Settings() {
             setImgSrc(Logo) 
             return;}
         window.localStorage.setItem("src", `${response.file.user_id}.${response.file.type}`)
+
+        
         ref.current.value = "";
         window.location.reload()
 
@@ -212,6 +216,16 @@ function Settings() {
                                     <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                                         <div className="">
                                         <form action="#">
+{/* 
+                                        {succimg ? <div className="flex flex-between">
+                                                    <div
+                                                        class="bg-red-100  border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                                        role="alert">
+                                                        <strong class="font-bold">Succsess !</strong>
+                                                        <span class="block sm:inline">{succimg}</span>
+                                                    </div>
+                                                    <button onClick={e => setsuccimg("")} className="bg-red-100  border border-red-400 text-red-700 px-4 py-3 rounded relative">x</button>
+                                                </div> : ""} */}
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700">
                                                 Photo
